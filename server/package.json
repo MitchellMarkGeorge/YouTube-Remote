@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": { "node": "12.16.3" },
   "scripts": {
-    "start": "nodemon server.ts",
+    "start": "node build/server.js",
+    "postinstall": "npm run build",
+    "dev-start": "nodemon server.ts",
     "build": "tsc",
     "build2": "tsc --project ./"
   },

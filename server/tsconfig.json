@@ -5,6 +5,11 @@
       "rootDir": "./",
       "outDir": "./build",
       "esModuleInterop": true,
-      "strict": true
-    }
+      "strict": true,
+      "noImplicitAny": false
+    },
+
+    "exclude" : [
+      "node_modules"  /* exclude everything in  node_modules */
+  ]
   }

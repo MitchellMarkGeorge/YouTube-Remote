@@ -12,7 +12,7 @@ const PORT = process.env.port || 5050;
 app.use(cors());
 
 let rooms: string[] = [];
-let events = ["play", "mute", "forward", "backward", "speed-up", "slow-down"];
+
 
 io.on("connection", (socket: Socket) => {
   socket.on("create-room", (roomName: string) => {
