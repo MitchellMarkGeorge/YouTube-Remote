@@ -1,0 +1,33 @@
+{
+    "manifest_version": 2,
+    "name": "YouTube Remote",
+    "short_name": "YouTube Remote",
+    "author": "Mitchell Mark-George",
+    "version": "1.0",
+    "description": "An extension to control YouTube from your phone",
+    
+    
+    
+    "background": {
+      "scripts": [
+        "background/background.js"
+      ],
+      "persistent": false
+    },
+
+    "permissions": ["tabs", "declarativeContent"],
+
+    "page_action": {
+        "default_popup": "popup/popup.html"
+      },
+
+    "content_scripts": [
+        {
+          "matches": ["*://youtube.com/watch*"],
+          
+          "js": ["content/content.js"]
+        }
+      ],
+    
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  }

@@ -7,7 +7,6 @@
     "start": "nodemon server.ts",
     "build": "tsc",
     "build2": "tsc --project ./"
-
   },
   "keywords": [],
   "author": "",

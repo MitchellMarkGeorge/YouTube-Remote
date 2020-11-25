@@ -15,18 +15,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chart.js": "^2.9.4",
     "evergreen-ui": "^5.1.2",
+    "qrcode.react": "^1.0.0",
     "react": "^17.0.1",
-    "react-chartjs-2": "^2.11.1",
     "react-dom": "^17.0.1",
-    "react-tabs": "^3.1.1",
-    "ui-box": "^4.1.0"
+    "socket.io-client": "^3.0.3",
+    "ui-box": "^4.1.0",
+    "uniqid": "^5.2.0",
+    "unique-names-generator": "^4.3.1"
   },
   "devDependencies": {
     "@types/chrome": "0.0.126",
+    "@types/qrcode.react": "^1.0.1",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
+    "@types/uniqid": "^5.2.0",
     "@types/webpack": "^4.41.24",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
