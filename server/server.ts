@@ -1,14 +1,16 @@
 import express from "express";
 import { Server, Socket } from "socket.io";
-import http from "http";
+// import http from "http";
 import cors from "cors";
 
+const PORT = process.env.port || 5050;
 const app = express();
 app.use(cors()); 
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+// const server = http.createServer(app);
+const server = app.listen(PORT);
+const io = new Server(server, { cors: { origin: '*' } });
 
-const PORT = process.env.port || 5050;
+
 
 
 
@@ -50,6 +52,6 @@ io.on("connection", (socket: Socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server started at ${PORT}`);
-});
+// server.listen(PORT, () => {
+//   console.log(`Server started at ${PORT}`);
+// });

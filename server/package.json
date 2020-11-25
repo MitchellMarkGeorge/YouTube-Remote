@@ -9,8 +9,8 @@
     "postinstall": "npm run build",
     "dev-start": "nodemon server.ts",
     "build": "tsc",
-    "build2": "tsc --project ./",
-    "deploy": "git add . && git commit -m Heroku && git subtree push --prefix server heroku master"
+    "build2": "tsc --project ./"
+   
   },
   "keywords": [],
   "author": "",
