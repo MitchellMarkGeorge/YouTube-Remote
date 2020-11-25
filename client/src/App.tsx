@@ -15,7 +15,7 @@ export class App extends Component {
   // socket: Socket = io('http://localhost:5050')
 
   componentDidMount() { 
-    this.socket = io("http://localhost:5050");
+    this.socket = io("https://yt-remote-extension.herokuapp.com/");
     // console.log(this.socket);
     this.socket.on("room-not-avalible", () => {
       toaster.danger("The room you want to join is unavalible");

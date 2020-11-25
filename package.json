@@ -1,0 +1,20 @@
+{
+  "name": "ytremote",
+  "version": "1.0.0",
+  "description": "A chrome extension to control YouTube from your phone **EXPERIMENTAL**",
+  "main": "index.js",
+  "scripts": {
+    "deploy-server": "git add . && git commit -m Heroku && git subtree push --prefix server heroku master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MitchellMarkGeorge/YouTube-Remote.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MitchellMarkGeorge/YouTube-Remote/issues"
+  },
+  "homepage": "https://github.com/MitchellMarkGeorge/YouTube-Remote#readme"
+}

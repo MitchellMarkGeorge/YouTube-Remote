@@ -40,7 +40,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 function initiateSocket() {
-    socket = io('http://localhost:5050');
+    socket = io('https://yt-remote-extension.herokuapp.com/');
 
     const roomName = getUniqueRoomName();
     // console.log(roomName)
