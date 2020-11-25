@@ -65,14 +65,14 @@ function initiateSocket() {
               
         //       port = chrome.tabs.connect(result[0].id);
         //   })
-        // if (!port) {
-        //     chrome.tabs.query({ url: "https://www.youtube.com/watch?v=5-TKfOzwu9w"}, result => {
-        //      port = chrome.tabs.connect(result[0].id);
-        //      port.postMessage({ event })
-        //  })
-        // } else {
-        //     port.postMessage({ event });
-        // }
+        if (!port) {
+            chrome.tabs.query({ active: true, currentWindow: true }, result => {
+             port = chrome.tabs.connect(result[0].id);
+             port.postMessage({ event })
+         })
+        } else {
+            port.postMessage({ event });
+        }
         
         
     })
