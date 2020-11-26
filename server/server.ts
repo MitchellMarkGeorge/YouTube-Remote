@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 // const server = app.listen(PORT);
 const server = http.createServer(app);
-const io = new Server(server, { origins: "*:*" }); // do i need this
+const io = new Server(server, { origins: "*:*" }); // do i need this?
 
 let rooms: string[] = []; // might not need this
 
