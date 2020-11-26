@@ -5,7 +5,7 @@ import cors from "cors";
 
 const PORT = process.env.port || 5050;
 const app = express();
-// app.use(cors()); 
+// app.use(cors())
 // const server = app.listen(PORT);
 const server = http.createServer(app);
 const io = new Server(server); // do i need this?
