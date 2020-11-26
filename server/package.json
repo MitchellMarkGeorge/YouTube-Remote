@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": { "node": "12.16.3" },
+  "engines": {
+    "node": "12.16.3"
+  },
   "scripts": {
     "start": "node build/server.js",
     "postinstall": "npm run build",
     "dev-start": "nodemon server.ts",
     "build": "tsc",
     "build2": "tsc --project ./"
-   
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,13 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "socket.io": "^3.0.3"
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.8",
     "@types/express": "^4.17.9",
     "@types/node": "^14.14.9",
+    "@types/socket.io": "^2.1.11",
     "nodemon": "^2.0.6",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"

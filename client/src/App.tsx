@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Home } from "./pages/Home";
 import { Remote } from "./pages/Remote";
-import { io, Socket } from "socket.io-client";
+import  io, { Socket } from 'socket.io-client';
 import React, { Component } from "react";
 import { toaster } from "evergreen-ui";
 
@@ -10,7 +10,7 @@ interface State {}
 
 export class App extends Component {
   state: State = {};
-  socket!: Socket;
+  socket!: typeof Socket;
   roomName!: string;
   // socket: Socket = io('http://localhost:5050')
 

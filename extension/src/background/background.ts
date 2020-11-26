@@ -1,8 +1,8 @@
-import { io, Socket } from 'socket.io-client';
+import  io, { Socket } from 'socket.io-client';
 import { StateManager , getUniqueRoomName } from './utils';
 
 
-let socket: Socket = null
+let socket: typeof Socket = null
 let port: chrome.runtime.Port;
 
 const popuprule: chrome.events.Rule = {
