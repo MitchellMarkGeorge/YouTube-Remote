@@ -18,8 +18,8 @@ export function getUniqueRoomName() {
 }
 
 interface BackgroundState {
-  socket?: Socket;
-  current
+  socket?: typeof Socket;
+  
 }
 
 export class StateManager {

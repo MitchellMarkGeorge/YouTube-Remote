@@ -4,11 +4,11 @@ import http from "http";
 import cors from "cors";
 
 const PORT = process.env.port || 5050;
-const app = express();
+// const app = express();
 // app.use(cors())
 // const server = app.listen(PORT);
-const server = http.createServer(app);
-const io = new Server(server); // do i need this?
+// const server = http.createServer(PORT);
+const io = new Server(PORT); // do i need this?
 
 let rooms: string[] = []; // might not need this
 
@@ -46,6 +46,6 @@ io.on("connection", (socket: Socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server started at ${PORT}`);
-});
+// server.listen(PORT, () => {
+//   console.log(`Server started at ${PORT}`);
+// });

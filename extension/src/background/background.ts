@@ -2,10 +2,10 @@ import  io, { Socket } from 'socket.io-client';
 import { StateManager , getUniqueRoomName } from './utils';
 
 
-let socket: typeof Socket = null
+let socket: typeof Socket = null; 
 let port: chrome.runtime.Port;
 
-const popuprule: chrome.events.Rule = {
+const popupRule: chrome.events.Rule = {
   conditions: [
     new chrome.declarativeContent.PageStateMatcher({
       pageUrl: { hostEquals: "www.youtube.com", pathContains: "watch", schemes: ['https', 'http']  }, //youtube.com/watch // could posea problem with urlContains
@@ -18,7 +18,7 @@ const popuprule: chrome.events.Rule = {
 
 chrome.runtime.onInstalled.addListener(function (details) {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-    chrome.declarativeContent.onPageChanged.addRules([popuprule]);
+    chrome.declarativeContent.onPageChanged.addRules([popupRule]);
   });
 });
 
