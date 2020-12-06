@@ -8,10 +8,7 @@ import Server = require("socket.io");
 import { Socket } from "socket.io";
 
 const httpServer = createServer();
-const io = new Server(httpServer, {
-  // ...
-  origins: '*:*'
-});
+const io = new Server(httpServer);
 
 const PORT = process.env.port || 5050;
 // // const app = express();
