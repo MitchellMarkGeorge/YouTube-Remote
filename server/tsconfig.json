@@ -1,15 +1,13 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "rootDir": "./",
-      "outDir": "./build",
-      "esModuleInterop": true,
-      "strict": true,
-      "noImplicitAny": false
-    },
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "./",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitAny": false
+  },
 
-    "exclude" : [
-      "node_modules"  /* exclude everything in  node_modules */
-  ]
-  }
+  "exclude": ["node_modules" /* exclude everything in  node_modules */]
+}

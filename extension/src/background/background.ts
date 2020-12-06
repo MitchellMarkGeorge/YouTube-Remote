@@ -1,5 +1,5 @@
 import  io, { Socket } from 'socket.io-client';
-import { StateManager , getUniqueRoomName } from './utils';
+import { getUniqueRoomName } from './utils';
 
 
 let socket: typeof Socket = null; 
@@ -40,8 +40,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 function initiateSocket() {
-    socket = io('https://yt-remote-extension.herokuapp.com/');
+    // socket = io('https://yt-remote-extension.herokuapp.com/');
 
+    socket = io('http://localhost:5050/'); 
     const roomName = getUniqueRoomName();
     // console.log(roomName)
     socket.emit("create-room", roomName); // another fun name

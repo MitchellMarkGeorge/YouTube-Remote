@@ -1,16 +1,32 @@
-import express from "express";
-import Server, { Socket } from "socket.io";
-import http from "http";
-import cors from "cors";
+// import express from "express";
+// import Server, { Socket } from "socket.io";
+// import http from "http";
+// import cors from "cors";
+
+import { createServer } from "http";
+import Server = require("socket.io");
+import { Socket } from "socket.io";
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  // ...
+  origins: '*:*'
+});
 
 const PORT = process.env.port || 5050;
-// const app = express();
-// app.use(cors())
-// const server = app.listen(PORT);
+// // const app = express();
+// // app.use(cors())
+// // const server = app.listen(PORT);
 // const server = http.createServer(PORT);
-const io = new Server(PORT); // do i need this?
+// const io = new Server(server); // do i need this?
+
+
+
+
 
 let rooms: string[] = []; // might not need this
+
+io.sockets.adapter
 
 io.on("connection", (socket: Socket) => {
   function sendRoomError(err?: any) {
@@ -49,3 +65,5 @@ io.on("connection", (socket: Socket) => {
 // server.listen(PORT, () => {
 //   console.log(`Server started at ${PORT}`);
 // });
+
+httpServer.listen(PORT);

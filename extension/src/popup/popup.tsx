@@ -29,11 +29,11 @@ class Popup extends Component {
       return (
         <>
           <QRCode value={this?.state?.newRoomName} />
-          <Heading marginTop="10px">
+          <Heading marginTop="8px">
             Go to *url* on your phone and scan the QRCode to connect your
             remote!
           </Heading>
-          <Paragraph color="muted" marginTop="10px">{this?.state?.newRoomName}</Paragraph>
+          <Paragraph color="muted" marginTop="8px">{this?.state?.newRoomName}</Paragraph>
         </>
       );
     } else return <Heading size={600}>Loading...</Heading>;

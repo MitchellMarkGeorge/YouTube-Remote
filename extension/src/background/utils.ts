@@ -22,19 +22,19 @@ interface BackgroundState {
   
 }
 
-export class StateManager {
-  state: BackgroundState;
-  constructor(initalState?: BackgroundState) {
-    if (initalState) {
-      this.state = initalState;
-    }
-  }
+// export class StateManager {
+//   state: BackgroundState;
+//   constructor(initalState?: BackgroundState) {
+//     if (initalState) {
+//       this.state = initalState;
+//     }
+//   }
 
-  updateState(updates: BackgroundState): void {
-    Object.assign(this.state, updates);
-  }
+//   updateState(updates: BackgroundState): void {
+//     Object.assign(this.state, updates);
+//   }
 
-  getStateCopy(): BackgroundState {
-    return Object.assign({}, this.state);
-  }
-}
+//   getStateCopy(): BackgroundState {
+//     return Object.assign({}, this.state);
+//   }
+// }
