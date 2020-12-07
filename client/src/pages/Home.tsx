@@ -3,10 +3,10 @@ import Box from "ui-box";
 import QrReader from "react-qr-reader";
 import { Heading, Paragraph, TextInput, toaster } from "evergreen-ui";
 
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 
 interface Props {
-    joinRoom: (roomName: string) => void;
+    joinRoom: (peerID: string) => void;
     
 }
 interface State {
@@ -21,7 +21,7 @@ export class Home extends Component<Props, State> {
       //only once???
     if (result && typeof result === 'string') {
       console.log(result);
-        this.joinRoom(result);
+        this.props.joinRoom(result);
       
       
     
@@ -32,15 +32,12 @@ export class Home extends Component<Props, State> {
     } 
   };
 
-  joinRoom = (roomName: string) => {
-    this.props.joinRoom(roomName);
-    this.setState({ goToRemotePage: true})
-  }
+  
 
 
   onKeyPress = (event: any) => {
     if (event.key === 'Enter') {
-        this.joinRoom(this.state.value)
+        this.props.joinRoom(this.state.value)
     }
   }
 
@@ -55,9 +52,7 @@ export class Home extends Component<Props, State> {
 
   render() {
 
-    if (this.state.goToRemotePage) {
-        return <Redirect to="/remote"/>
-    }
+  
     return (
       <Box position="relative" height="100%" width="100%">
         <Box

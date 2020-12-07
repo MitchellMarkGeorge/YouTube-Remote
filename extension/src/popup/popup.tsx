@@ -8,8 +8,8 @@ import { Heading, Paragraph, Text } from "evergreen-ui";
 
 interface Props {}
 interface State {
-newRoomName?: string;
-  socketInitalized: boolean;
+  newID?: string;
+  initalized: boolean;
 }
 
 class Popup extends Component {
@@ -23,17 +23,19 @@ class Popup extends Component {
   }
 
   getView() {
-    if (this?.state?.socketInitalized) {
+    if (this?.state?.initalized) {
       return <Heading>Your Remote is alreadey initalized</Heading>;
-    } else if (this?.state?.newRoomName) {
+    } else if (this?.state?.newID) {
       return (
         <>
-          <QRCode value={this?.state?.newRoomName} />
+          <QRCode value={this?.state?.newID} />
           <Heading marginTop="8px">
             Go to *url* on your phone and scan the QRCode to connect your
             remote!
           </Heading>
-          <Paragraph color="muted" marginTop="8px">{this?.state?.newRoomName}</Paragraph>
+          <Paragraph color="muted" marginTop="8px">
+            {this?.state?.newID}
+          </Paragraph>
         </>
       );
     } else return <Heading size={600}>Loading...</Heading>;

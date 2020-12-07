@@ -1,20 +1,24 @@
-import  io, { Socket } from 'socket.io-client';
-import { getUniqueRoomName } from './utils';
+import Peer from "peerjs";
+import { v4 as uuid } from "uuid";
 
-
-let socket: typeof Socket = null; 
-let port: chrome.runtime.Port;
+let peer: Peer = null;
+let connection: Peer.DataConnection = null;
+let port: chrome.runtime.Port = null;
 
 const popupRule: chrome.events.Rule = {
   conditions: [
     new chrome.declarativeContent.PageStateMatcher({
-      pageUrl: { hostEquals: "www.youtube.com", pathContains: "watch", schemes: ['https', 'http']  }, //youtube.com/watch // could posea problem with urlContains
+      pageUrl: {
+        hostEquals: "www.youtube.com",
+        pathContains: "watch",
+        schemes: ["https", "http"],
+      }, //youtube.com/watch // could posea problem with urlContains
     }),
   ],
   actions: [new chrome.declarativeContent.ShowPageAction()],
 };
 
-// how to 
+
 
 chrome.runtime.onInstalled.addListener(function (details) {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
@@ -23,63 +27,74 @@ chrome.runtime.onInstalled.addListener(function (details) {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.request === 'popup-load') {
-        
-        if (socket) {
-            // should also send the room name
-            sendResponse({ socketInitalized: true });
-            socket.disconnect();
-            socket = null;
-        } else {
-            const newRoomName = initiateSocket();
-            sendResponse({ newRoomName });
-        }
+  if (message.request === "popup-load") {
+    if (peer) {
+      // should also send the room name
+      sendResponse({ initalized: true });
+      peer.disconnect();
+      peer = null;
+      connection.close();
+    } else {
+      const newID = initiatePeer();
+      sendResponse({ newID });
     }
+  } else if (message.request === "page-unload") {
+    reset();
+  }
 
-    return true;
-})
+  return true;
+});
 
-function initiateSocket() {
-    socket = io('https://yt-remote-extension.herokuapp.com/');
-
-    // socket = io('http://localhost:5050/'); 
-    const roomName = getUniqueRoomName();
-    // console.log(roomName)
-    socket.emit("create-room", roomName); // another fun name
-    
-    socket.on("room-not-avalible", () => {
-        console.log('room name already taken');
+function sendEvent(event: string) {
+  console.log(event)
+  if (!port) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (result) => {
+      port = chrome.tabs.connect(result[0].id);
+      port.postMessage({ event });
     });
-
-    // socket.on("connection-made", () => {
-    //     chrome.tabs.query({ url: "*://youtube.com/watch*"}, result => {
-    //         port = chrome.tabs.connect(result[0].id);
-    //     })
-        
-    // })
-
-    socket.on('remote-event', (event: string) => {
-        // port.postMessage({ event })
-        console.log(event);
-        // chrome.tabs.query({ url: "https://www.youtube.com/watch?v=5-TKfOzwu9w"}, result => {
-        //       console.log(result);
-              
-        //       port = chrome.tabs.connect(result[0].id);
-        //   })
-        if (!port) {
-            chrome.tabs.query({ active: true, currentWindow: true }, result => {
-             port = chrome.tabs.connect(result[0].id);
-             port.postMessage({ event })
-         })
-        } else {
-            port.postMessage({ event });
-        }
-        
-        
-    })
-
-    
-    return roomName; 
+  } else {
+    port.postMessage({ event });
+  }
 }
 
+function reset() {
+  if (port) {
+    port.disconnect();
+  }
+    peer.destroy();
+    peer = null;
+    connection = null;
+  
+}
 
+function initiatePeer() {
+  const id = uuid();
+  peer = new Peer(id);
+
+  peer.on("connection", (conn) => {
+    connection = conn;
+
+    connection.on("data", sendEvent);
+
+    connection.on("close", reset);
+
+    connection.on("error", (err) => {
+      console.error(err);
+    });
+  });
+
+  peer.on("error", console.error);
+
+  // peer.on("disconnected", () => {
+  //   console.log("disconnected");
+  //   reset();
+  // });
+
+  peer.on("close", reset) // dont call this??
+
+ 
+
+  
+
+  return peer.id;
+}

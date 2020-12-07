@@ -1,4 +1,4 @@
-console.log('here in content');
+console.log("here in content");
 
 chrome.runtime.onConnect.addListener(function (port) {
   const videoElement = document.getElementsByTagName("video")[0];
@@ -14,25 +14,29 @@ chrome.runtime.onConnect.addListener(function (port) {
         videoElement.muted = !videoElement.muted;
         break;
 
-      case "forward": 
+      case "forward":
         videoElement.currentTime += 5;
         break;
 
-      case "backward": 
+      case "backward":
         videoElement.currentTime -= 5;
         break;
 
-      case "speed-up": 
+      case "speed-up":
         videoElement.playbackRate += 0.5;
         break;
 
-      case "slow-down": 
+      case "slow-down":
         videoElement.playbackRate -= 0.5;
         break;
     }
   });
 
-  
+  port.onDisconnect.addListener(() => {
+    console.log("disconected");
+  });
+});
 
-  port.onDisconnect.addListener(() => {console.log('disconected')});
+window.addEventListener("unload", () => {
+  chrome.runtime.sendMessage({ request: "page-unload" });
 });

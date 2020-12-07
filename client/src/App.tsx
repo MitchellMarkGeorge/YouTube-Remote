@@ -1,68 +1,76 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import Peer from "peerjs";
 import { Home } from "./pages/Home";
 import { Remote } from "./pages/Remote";
-import  io, { Socket } from 'socket.io-client';
 import React, { Component } from "react";
 import { toaster } from "evergreen-ui";
+import { v4 as uuid } from "uuid";
 
-interface State {}
+interface State {
+  peer?: Peer;
+  connection?: Peer.DataConnection;
+}
 
-export class App extends Component {
-  state: State = {};
-  socket!: typeof Socket;
-  roomName!: string;
-  // socket: Socket = io('http://localhost:5050')
+export class App extends Component<{}, State> {
+  state: State = {
+    peer: new Peer(uuid()),
+  };
 
-  componentDidMount() { 
-    this.socket = io("https://yt-remote-extension.herokuapp.com/");
-    // console.log(this.socket);
-    this.socket.on("room-not-avalible", () => {
-      toaster.danger("The room you want to join is unavalible");
+
+  componentDidMount() {
+    this.state.peer?.on("close", () => {
+      if (this.state.connection) {
+        this.setState({ connection: undefined });
+      }
     });
 
-    this.socket.on("disconnect", () => {
+    this.state.peer?.on("error", (e) => {
+      console.log(e);
+      toaster.danger("Error occored");
+    });
+
+    this.state.peer?.on("disconnect", () => {
       console.log("Disconnected");
+      if (this.state.connection) {
+        this.setState({ connection: undefined });
+      }
     });
   }
 
   onButtonClick = (eventName: string) => {
-    this.socket.emit("remote-button-click", eventName, this.roomName);
+    // this.state.peer.emit("remote-button-click", eventName, this.roomName);
+    this.state.connection?.send(eventName);
   };
 
-  joinRoom = (roomName: string) => {
+  joinRoom = (peerID: string) => {
     // console.log(this.socket);
-    this.socket.emit("join-room", roomName);
-    this.roomName = roomName; // or put in state??
-  };
-  render() {
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <Home joinRoom={this.joinRoom} />
-          </Route>
-          <Route path="/remote">
-            <Remote onButtonClick={this.onButtonClick} />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+    // this.socket.emit("join-room", roomName);
 
-      // <Remote onButtonClick={this.onButtonClick}/> // show home if socket disconnects
-      //just pass socket??
-    );
+    const connection = this.state.peer?.connect(peerID);
+    this.setState({ connection }, this.setConnectionListeners)
+    // this.roomName = roomName; // or put in state??
+  };
+
+  setConnectionListeners = () => {
+    // should i wait for the open event???
+    this.state.connection?.on("error", (err) => {
+      console.log(err);
+      toaster.danger("Error occored");
+    })
+
+    this.state.connection?.on("close", () => {
+      this.setState({ connection: undefined })
+    })
+  }
+
+  componentWillUnmount() {
+    this.state.peer?.destroy()
+  }
+  render() {
+    if (this.state.connection) {
+      return <Remote onButtonClick={this.onButtonClick} />;
+    } else {
+      return <Home joinRoom={this.joinRoom} />;
+    }
   }
 }
 
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Switch>
-//         <Route exact path="/" component={Home} />
-//         <Route path="remote">
-//           <Remote />
-//         </Route>
-//       </Switch>
-//     </BrowserRouter>
-//   );
-// }

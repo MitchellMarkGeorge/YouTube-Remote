@@ -14,8 +14,7 @@ interface State {}
 
 export class Remote extends Component<Props, State> {
   render() {
-      console.log('here');
-    return (
+          return (
       <Box position="relative" height="100%" width="100%">
         <Box
           position="absolute"
