@@ -65,7 +65,7 @@ export class Home extends Component<Props, State> {
           <Heading textAlign="center" marginBottom="8px" size={600}>
             YouTube Remote
           </Heading>
-          <Paragraph color="muted" marginBottom="8px">
+          <Paragraph color="muted" textAlign="center" marginBottom="8px">
             Scan the QRcode created by the extension here.
           </Paragraph>
           <QrReader onScan={this.onScan} onError={this.onError}></QrReader>

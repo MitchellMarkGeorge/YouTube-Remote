@@ -4,7 +4,7 @@ import QRCode from "qrcode.react";
 
 import "./popup.css";
 import Box from "ui-box";
-import { Heading, Paragraph, Text } from "evergreen-ui";
+import { Button, Heading, Paragraph, Text } from "evergreen-ui";
 
 interface Props {}
 interface State {
@@ -22,23 +22,38 @@ class Popup extends Component {
     });
   }
 
+  disconnectRemote = () => {
+    chrome.runtime.sendMessage({ request: "disconnect-remote" });
+  };
+
   getView() {
     if (this?.state?.initalized) {
-      return <Heading>Your Remote is alreadey initalized</Heading>;
+      return (
+        <>
+          <Heading color="white">Your Remote is alreadey initalized.</Heading>
+          <Button
+            marginTop="8px"
+            intent="danger"
+            onClick={this.disconnectRemote}
+          >
+            Disconnect
+          </Button>
+        </>
+      );
     } else if (this?.state?.newID) {
       return (
         <>
           <QRCode value={this?.state?.newID} />
-          <Heading marginTop="8px">
-            Go to *url* on your phone and scan the QRCode to connect your
-            remote!
-          </Heading>
-          <Paragraph color="muted" marginTop="8px">
+          <Paragraph color="white"  marginTop="8px">
+            Go to <b>https://yt-remote.netlify.app</b> on your phone and scan the
+            QRCode to connect your remote!
+          </Paragraph>
+          <Paragraph color="white" marginTop="8px">
             {this?.state?.newID}
           </Paragraph>
         </>
       );
-    } else return <Heading size={600}>Loading...</Heading>;
+    } else return <Heading color="white" size={600}>Loading...</Heading>;
   }
 
   render() {

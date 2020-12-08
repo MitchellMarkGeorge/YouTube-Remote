@@ -27,7 +27,7 @@ chrome.runtime.onConnect.addListener(function (port) {
         break;
 
       case "slow-down":
-        videoElement.playbackRate -= 0.5;
+        videoElement.playbackRate -= 0.5; // THERE SHOULD BE A THRESHHOLD
         break;
     }
   });
@@ -38,5 +38,5 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 window.addEventListener("unload", () => {
-  chrome.runtime.sendMessage({ request: "page-unload" });
+  chrome.runtime.sendMessage({ request: "page-unload" }); // should i call disconnect from here???
 });

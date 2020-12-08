@@ -31,14 +31,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (peer) {
       // should also send the room name
       sendResponse({ initalized: true });
-      peer.disconnect();
-      peer = null;
-      connection.close();
+      // peer.disconnect();
+      // peer = null;
+      // connection.close();
     } else {
       const newID = initiatePeer();
       sendResponse({ newID });
     }
-  } else if (message.request === "page-unload") {
+  } else if (message.request === "page-unload" || message.request === 'disconnect-remote') {
     reset();
   }
 
@@ -58,10 +58,11 @@ function sendEvent(event: string) {
 }
 
 function reset() {
-  if (port) {
-    port.disconnect();
-  }
-    peer.destroy();
+  // if (port) {
+  //   port.disconnect();
+  // }
+    port && port.disconnect();
+    peer && peer.destroy();
     peer = null;
     connection = null;
   
