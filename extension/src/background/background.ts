@@ -2,6 +2,7 @@ import Peer from "peerjs";
 import { v4 as uuid } from "uuid";
 
 let peer: Peer = null;
+// make it with sockets
 let connection: Peer.DataConnection = null;
 let port: chrome.runtime.Port = null;
 
@@ -28,41 +29,50 @@ chrome.runtime.onInstalled.addListener(function (details) {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.request === "popup-load") {
-    if (peer) {
-      // should also send the room name
-      sendResponse({ initalized: true });
-      // peer.disconnect();
-      // peer = null;
-      // connection.close();
+    if (connection) {
+
+      sendResponse({ connected: true });
+      
     } else {
-      const newID = initiatePeer();
-      sendResponse({ newID });
+      const peerID = peer ? peer.id : initiatePeer();
+      sendResponse({ peerID });
     }
-  } else if (message.request === "page-unload" || message.request === 'disconnect-remote') {
+  } else if (message.request === 'disconnect-remote') {
     reset();
   }
 
   return true;
 });
 
+
 function sendEvent(event: string) {
   console.log(event)
+  // creates a port for communication with content script
+  // snds over the event that was received from the remote
   if (!port) {
     chrome.tabs.query({ active: true, currentWindow: true }, (result) => {
       port = chrome.tabs.connect(result[0].id);
       port.postMessage({ event });
+
+      port.onDisconnect.addListener(() => {
+        console.log('Disconnected port');
+        reset(true);
+      })
     });
   } else {
     port.postMessage({ event });
   }
 }
 
-function reset() {
+function reset(isPortDisconnected?: boolean) {
   // if (port) {
   //   port.disconnect();
   // }
+  if (isPortDisconnected) {
     port && port.disconnect();
-    peer && peer.destroy();
+  }
+    port = null;
+    peer && peer.destroy(); // also closes connectioon
     peer = null;
     connection = null;
   

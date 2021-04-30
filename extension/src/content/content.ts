@@ -1,7 +1,7 @@
 console.log("here in content");
 
 chrome.runtime.onConnect.addListener(function (port) {
-  const videoElement = document.getElementsByTagName("video")[0];
+  const videoElement = document.getElementsByTagName("video")[0]; // querySelector()?
   port.onMessage.addListener(function ({ event }) {
     switch (event) {
       case "play":
@@ -32,11 +32,16 @@ chrome.runtime.onConnect.addListener(function (port) {
     }
   });
 
-  port.onDisconnect.addListener(() => {
-    console.log("disconected");
-  });
+  // port.onDisconnect.addListener(() => {
+  //   console.log("disconected");
+  // });
+
+  // window.addEventListener("unload", () => {
+  //   port.disconnect();
+  //   // chrome.runtime.sendMessage({ request: "page-unload" }); // should i call disconnect from here???
+  // });
 });
 
-window.addEventListener("unload", () => {
-  chrome.runtime.sendMessage({ request: "page-unload" }); // should i call disconnect from here???
-});
+// window.addEventListener("unload", () => {
+//   chrome.runtime.sendMessage({ request: "page-unload" }); // should i call disconnect from here???
+// });

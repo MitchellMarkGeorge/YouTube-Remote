@@ -8,8 +8,8 @@ import { Button, Heading, Paragraph, Text } from "evergreen-ui";
 
 interface Props {}
 interface State {
-  newID?: string;
-  initalized: boolean;
+  peerID?: string;
+  connected: boolean;
 }
 
 class Popup extends Component {
@@ -27,10 +27,10 @@ class Popup extends Component {
   };
 
   getView() {
-    if (this?.state?.initalized) {
+    if (this?.state?.connected) {
       return (
         <>
-          <Heading color="white">Your Remote is alreadey initalized.</Heading>
+          <Heading color="white">Your Remote is already connected.</Heading>
           <Button
             marginTop="8px"
             intent="danger"
@@ -40,16 +40,16 @@ class Popup extends Component {
           </Button>
         </>
       );
-    } else if (this?.state?.newID) {
+    } else if (this?.state?.peerID) {
       return (
         <>
-          <QRCode value={this?.state?.newID} />
+          <QRCode value={this?.state?.peerID} />
           <Paragraph color="white"  marginTop="8px">
             Go to <b>https://yt-remote.netlify.app</b> on your phone and scan the
             QRCode to connect your remote!
           </Paragraph>
           <Paragraph color="white" marginTop="8px">
-            {this?.state?.newID}
+            {this?.state?.peerID}
           </Paragraph>
         </>
       );

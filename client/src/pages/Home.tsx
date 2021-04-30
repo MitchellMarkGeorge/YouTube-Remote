@@ -6,7 +6,7 @@ import { Heading, Paragraph, TextInput, toaster } from "evergreen-ui";
 // import { Redirect } from "react-router-dom";
 
 interface Props {
-    joinRoom: (peerID: string) => void;
+    connectPeer: (peerID: string) => void;
     
 }
 interface State {
@@ -21,7 +21,7 @@ export class Home extends Component<Props, State> {
       //only once???
     if (result && typeof result === 'string') {
       console.log(result);
-        this.props.joinRoom(result);
+        this.props.connectPeer(result);
       
       
     
@@ -37,7 +37,7 @@ export class Home extends Component<Props, State> {
 
   onKeyPress = (event: any) => {
     if (event.key === 'Enter') {
-        this.props.joinRoom(this.state.value)
+        this.props.connectPeer(this.state.value)
     }
   }
 
