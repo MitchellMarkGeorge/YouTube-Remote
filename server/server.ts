@@ -1,4 +1,13 @@
 /* After switching to p2p, this sever is useless, unless i will use PeerServer*/
+import { Server } from "socket.io";
+
+const PORT = 3000;
+
+const io = new Server(PORT);
+
+console.log("hello")
+
+
 
 
 
