@@ -1,13 +1,11 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "target": "es5",
+    "strict": true,
+    "esModuleInterop": true, 
     "module": "commonjs",
     "sourceMap": true,
     "jsx": "react",
-    "types": ["@types/chrome", "node"],
-    "typeRoots": ["node_modules/@types"],
-    "moduleResolution": "node",
-    "lib": ["es2017", "dom"]
+    "typeRoots": ["node_modules/@types"]
   }
 }
