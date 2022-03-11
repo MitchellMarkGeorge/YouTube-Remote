@@ -1,0 +1,18 @@
+.yt-remote-image {
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+}
+
+.yt-remote-image:hover {
+    cursor: pointer;
+}
+.yt-remote-qrcode-container {
+    background-color: #D14343;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    color: white !important;
+}

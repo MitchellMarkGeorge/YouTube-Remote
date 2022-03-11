@@ -13,7 +13,14 @@
       "run_at": "document_end",
       "js": [
         "content/content.js"
-      ]
+      ],
+      "css": ["content/content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["https://www.youtube.com/*"]  
     }
   ]
 }

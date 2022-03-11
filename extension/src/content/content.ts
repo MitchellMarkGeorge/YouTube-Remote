@@ -1,7 +1,8 @@
-//use this link to mount react button to page https://stackoverflow.com/questions/50790222/react-how-to-update-props-of-root-component
-// import React from "react";
-// import ReactDOM from "react-dom";
+//use this link to mount react button to page https://stackoverflow.com/questions/50790222/react-how-to-update-props-of-root-componen
+import React from "react";
+import ReactDOM from "react-dom";
 
+import RemoteButton from "./components/RemoteButton";
 import { waitForElement } from "./utils";
 
 console.log("here in content");
@@ -12,11 +13,16 @@ console.log(videoElement);
 //   document.contains
 // })
 // does the maifest.json still need the document_end part?
-waitForElement("ytd-menu-renderer").then(elm => {
-  console.log("here", elm);
+waitForElement("ytd-menu-renderer").then(injectionElement => {
+
+  const extensionContainer = document.createElement("yt-remote-ext");
+  injectionElement?.appendChild(extensionContainer); // technically never going to be null
+  const componentInstance = React.createElement(RemoteButton)
+  ReactDOM.render(componentInstance, extensionContainer)
+  console.log("here")
+
 })
 // const menu = document.querySelector("ytd-menu-renderer");
-const extensionContainer = document.createElement("yt-remote-ext")
 
 
 

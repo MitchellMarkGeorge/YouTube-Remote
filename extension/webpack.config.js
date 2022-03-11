@@ -40,7 +40,7 @@ module.exports = {
     new CleanWebpackPlugin(),
 
     new MiniCssExtractPlugin({
-      filename: "css/[name].css"
+      filename: "content/[name].css"
     }),
 
     new CopyPlugin({
