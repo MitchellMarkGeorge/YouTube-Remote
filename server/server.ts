@@ -1,82 +1,62 @@
-/* After switching to p2p, this sever is useless, unless i will use PeerServer*/
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
-const PORT = 3000;
+const PORT = 8000;
 
-const io = new Server(PORT);
+const io = new Server(PORT, {
+  cors: {
+    origin: "*",
+  },
+});
 
-console.log("hello")
+const roomExists = (roomName: string) => io.sockets.adapter.rooms.has(roomName);
 
+io.on("connection", (socket: Socket) => {
+  socket.on("create-room", (roomName: string) => {
+    // only the EXTENSION will call emit this event
+    console.log(`room created ${roomName}`);
+    if (roomExists(roomName)) {
+      io.to(socket.id).emit("room-not-avalible");
+    } else {
+      socket.join(roomName);
+      // ONLY join/create a room that DOES NOT exist
+    }
+  });
 
+  socket.on("join-room", (roomName: string) => {
+    // only the REMOTE will call emit this event
+    // might includde some more inital data about the state if the video at that moment
+    if (roomExists(roomName)) {
+      socket.join(roomName);
+      console.log(`joined room ${roomName}`);
+      // ONLY join room that exists
+      io.in(roomName).emit("connection-made"); // both EXTENSION and REMOTE receive this event
+    } else {
+      io.to(socket.id).emit("room-not-avalible");
+    }
+  });
 
+  socket.on("remote-button-click", (eventName: string, roomName: string) => {
+    // only the REMOTE emits/calls this event
+    console.log(eventName);
+    socket.to(roomName).emit("remote-event", eventName); // only the EXTENSION receives/listens to this event (the REMOTE does not receive this event)
+  });
 
+  socket.on("leave-room", (roomName: string) => {
+    // both EXTENSION and REMOTE can call this event
+    if (roomExists(roomName)) {
+      socket.leave(roomName);
+      socket.to(roomName).emit("remote-disconnect"); // alert other side of this disconnect
+    } else {
+      io.to(socket.id).emit("room-not-avalible");
+    }
+  });
 
-
-
-
-// // import express from "express";
-// // import Server, { Socket } from "socket.io";
-// // import http from "http";
-// // import cors from "cors";
-
-// import { createServer } from "http";
-// import Server = require("socket.io");
-// import { Socket } from "socket.io";
-
-// const httpServer = createServer();
-// const io = new Server(httpServer);
-
-// const PORT = process.env.port || 5050;
-// // // const app = express();
-// // // app.use(cors())
-// // // const server = app.listen(PORT);
-// // const server = http.createServer(PORT);
-// // const io = new Server(server); // do i need this?
-
-
-
-
-
-// let rooms: string[] = []; // might not need this
-
-// io.sockets.adapter
-
-// io.on("connection", (socket: Socket) => {
-//   function sendRoomError(err?: any) {
-//     if (err) console.log(err);
-//     io.to(socket.id).emit("room-not-avalible");
-//   }
-//   socket.on("create-room", (roomName: string) => {
-//     // console.log(roomName);
-
-//     console.log(roomName);
-//     if (!rooms.includes(roomName)) {
-//       rooms.push(roomName);
-//       socket.join(roomName, sendRoomError);
-//     } else {
-//       io.to(socket.id).emit("room-not-avalible");
-//     }
-//   });
-
-//   socket.on("join-room", (roomName) => {
-//     if (rooms.includes(roomName)) {
-//       socket.join(roomName, sendRoomError);
-//       io.to(roomName).emit("connection-made");
-//     } else {
-//       // io.to(socket.id).emit("room-not-avalible"); // tell specific socket that room is not avalible
-//       sendRoomError();
-//       //
-//     }
-
-//     socket.on("remote-button-click", (eventName: string, roomName: string) => {
-//       console.log(eventName);
-//       socket.to(roomName).emit("remote-event", eventName);
-//     });
-//   });
-// });
-
-// // server.listen(PORT, () => {
-// //   console.log(`Server started at ${PORT}`);
-// // });
-
-// httpServer.listen(PORT);
+  socket.on("disconnecting", () => {
+    const curerentRoom = Array.from(socket.rooms).filter(
+      (room) => room != socket.id
+    );
+    if (curerentRoom) {
+      socket.to(curerentRoom).emit("remote-disconnect"); // let other client know of disconnect is happening
+    }
+  });
+});

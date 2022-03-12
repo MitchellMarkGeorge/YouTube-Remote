@@ -7,7 +7,7 @@ export function waitForElement(selector: string): Promise<Element | null> {
 
     const observer = new MutationObserver(() => {
       if (document.querySelector(selector)) {
-        resolve(document.querySelector(selector))
+        resolve(document.querySelector(selector)) // should i be returning here?
         observer.disconnect();
       }
     });
